@@ -1,1 +1,71 @@
-<h1>Busy Tracker</h1>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <title>Busy Tracker</title>
+  </head>
+  <body>
+    <h1>Busy Tracker</h1>
+    <div class="container-sm p-5">
+        <form action="{{url_for('add_location')}}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Location Name</label>
+                <input type="text" class="form-control" name="locationName" >
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Google Map Location URL</label>
+                <input type="text" class="form-control" name="locationUrl">
+            </div>
+            <button type="submit" class="btn btn-primary">Track</button>
+        </form>
+        <h3 class="mt-5 pt-5">My Locations</h3>
+        <p>Green: safe <br> Red: dangerous</p>
+        <ul class="list-group list-group-flush">
+            {% for result in results %}
+            <li class="list-group-item">
+                <div class="card">
+                    <h5>Location name: {{result["location_name"]}}</h5>
+                    <div class="card-body">
+                        
+                        <br>
+                        <p>Hours: |
+                            {% for hour in result["time"]%}
+                                    {% set busy_percent = result["busy_percent"][loop.index-1]%}
+                                    {% set safe = result["is_safe"][loop.index-1]%}
+                                    {% if safe %}
+                                        <strong style="color:green">{{hour}}--- Busy%: {{busy_percent}}</strong> |
+                                    {% else %}
+                                        <strong style="color:red">{{hour}}--- Busy%: {{busy_percent}}</strong> |
+                                    {% endif %}
+                                     
+                            {%endfor%}</p>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+
+
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
